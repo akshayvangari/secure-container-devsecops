@@ -1,0 +1,1238 @@
+{
+  "projects": [
+    {
+      "id": "proj-netflix-clone",
+      "name": "Netflix Clone",
+      "slug": "netflix-clone",
+      "repositoryUrl": "https://github.com/enterprise-devsecops/netflix-clone.git",
+      "defaultBranch": "main",
+      "workspacePath": "/workspaces/netflix-clone",
+      "description": "Full-featured microservices video streaming front/backend with React and Node.js",
+      "language": "TypeScript",
+      "framework": "React / Node.js",
+      "securityScore": 62,
+      "criticalCount": 1,
+      "highCount": 0,
+      "mediumCount": 1,
+      "lowCount": 0,
+      "exposedSecretCount": 1,
+      "pipelineStatus": "PASSED",
+      "projectStatus": "ACTIVE",
+      "serverStatus": "RUNNING",
+      "devServerPort": 3001,
+      "dependencyCount": 142,
+      "fileCount": 385,
+      "hasDockerfile": true,
+      "hasK8sManifest": true,
+      "hasIac": true,
+      "lastScannedAt": "2026-10-09T13:48:53.453Z"
+    },
+    {
+      "id": "proj-netflix-web",
+      "name": "Netflix Web",
+      "slug": "netflix-web",
+      "repositoryUrl": "https://github.com/enterprise-devsecops/netflix-web.git",
+      "defaultBranch": "master",
+      "workspacePath": "/workspaces/netflix-web",
+      "description": "Customer-facing catalog UI and high-throughput video delivery web service",
+      "language": "JavaScript",
+      "framework": "Next.js / Express",
+      "securityScore": 76,
+      "criticalCount": 0,
+      "highCount": 3,
+      "mediumCount": 0,
+      "lowCount": 0,
+      "exposedSecretCount": 0,
+      "pipelineStatus": "PASSED",
+      "projectStatus": "ACTIVE",
+      "serverStatus": "STOPPED",
+      "devServerPort": 3002,
+      "dependencyCount": 98,
+      "fileCount": 240,
+      "hasDockerfile": true,
+      "hasK8sManifest": true,
+      "hasIac": false,
+      "lastScannedAt": "2026-10-09T13:48:46.075Z"
+    },
+    {
+      "id": "proj-pake-app",
+      "name": "Pake App",
+      "slug": "pake-app",
+      "repositoryUrl": "https://github.com/enterprise-devsecops/pake-desktop.git",
+      "defaultBranch": "main",
+      "workspacePath": "/workspaces/pake-app",
+      "description": "Lightweight containerized web-to-desktop wrapper built with Rust and WebKit runtime",
+      "language": "Rust / TS",
+      "framework": "Tauri / Rust",
+      "securityScore": 100,
+      "criticalCount": 0,
+      "highCount": 0,
+      "mediumCount": 0,
+      "lowCount": 0,
+      "exposedSecretCount": 0,
+      "pipelineStatus": "PASSED",
+      "projectStatus": "ACTIVE",
+      "serverStatus": "STOPPED",
+      "devServerPort": 8085,
+      "dependencyCount": 64,
+      "fileCount": 118,
+      "hasDockerfile": true,
+      "hasK8sManifest": true,
+      "hasIac": true,
+      "lastScannedAt": "2026-10-09T13:48:51.024Z"
+    }
+  ],
+  "findings": [
+    {
+      "id": "find-cve-001",
+      "projectId": "proj-netflix-clone",
+      "category": "CVE",
+      "title": "Remote Code Execution in jsonwebtoken verification",
+      "cveId": "CVE-2022-23529",
+      "packageName": "jsonwebtoken",
+      "installedVersion": "8.5.1",
+      "fixedVersion": "9.0.0",
+      "filePath": "package.json",
+      "lineNumber": 24,
+      "severity": "CRITICAL",
+      "cvssScore": 9.8,
+      "exploitability": "FUNCTIONAL",
+      "toolName": "OWASP Dependency-Check",
+      "description": "jsonwebtoken versions before 9.0.0 are vulnerable to remote code execution due to insecure secret or public key validation via crafted key objects.",
+      "remediationGuidance": "Upgrade jsonwebtoken to version 9.0.0 or higher. Review jwt.verify calls to pass string or Buffer secrets.",
+      "remediationStatus": "PATCH_PROPOSED",
+      "firstDetectedAt": "2026-10-06T13:37:05.193Z",
+      "lastDetectedAt": "2026-10-09T11:37:05.193Z"
+    },
+    {
+      "id": "find-sec-002",
+      "projectId": "proj-netflix-clone",
+      "category": "SECRET",
+      "title": "Exposed AWS Secret Access Key in client configuration",
+      "cveId": null,
+      "packageName": null,
+      "installedVersion": null,
+      "fixedVersion": null,
+      "filePath": "src/config/aws-client.ts",
+      "lineNumber": 42,
+      "severity": "CRITICAL",
+      "cvssScore": 9.5,
+      "exploitability": "HIGH",
+      "toolName": "Gitleaks",
+      "description": "Hardcoded AWS Secret Access Key detected in repository source code history.",
+      "remediationGuidance": "Immediately revoke secret key in AWS IAM. Use HashiCorp Vault or AWS Secrets Manager dynamic credential injection.",
+      "remediationStatus": "OPEN",
+      "firstDetectedAt": "2026-10-04T13:37:05.193Z",
+      "lastDetectedAt": "2026-10-09T11:37:05.193Z"
+    },
+    {
+      "id": "find-cve-003",
+      "projectId": "proj-netflix-web",
+      "category": "CVE",
+      "title": "Denial of Service via Prototype Pollution in lodash",
+      "cveId": "CVE-2023-45853",
+      "packageName": "lodash",
+      "installedVersion": "4.17.20",
+      "fixedVersion": "4.17.21",
+      "filePath": "package.json",
+      "lineNumber": 18,
+      "severity": "HIGH",
+      "cvssScore": 7.5,
+      "exploitability": "PROOF_OF_CONCEPT",
+      "toolName": "Trivy",
+      "description": "Prototype pollution in lodash allows remote attackers to cause denial of service or manipulate application logic.",
+      "remediationGuidance": "Update lodash to 4.17.21 in package.json and lockfile.",
+      "remediationStatus": "OPEN",
+      "firstDetectedAt": "2026-10-05T13:37:05.193Z",
+      "lastDetectedAt": "2026-10-09T08:37:05.193Z"
+    },
+    {
+      "id": "find-doc-004",
+      "projectId": "proj-netflix-web",
+      "category": "DOCKER",
+      "title": "Dockerfile runs container process as root user",
+      "cveId": null,
+      "packageName": null,
+      "installedVersion": null,
+      "fixedVersion": null,
+      "filePath": "Dockerfile",
+      "lineNumber": 38,
+      "severity": "HIGH",
+      "cvssScore": 7.8,
+      "exploitability": "FUNCTIONAL",
+      "toolName": "Hadolint",
+      "description": "Dockerfile does not specify a non-root USER instruction. Containers running as root violate the principle of least privilege.",
+      "remediationGuidance": "Add non-root user creation: `RUN addgroup -S appgroup && adduser -S appuser -G appgroup` and switch with `USER appuser`.",
+      "remediationStatus": "OPEN",
+      "firstDetectedAt": "2026-10-07T13:37:05.193Z",
+      "lastDetectedAt": "2026-10-09T08:37:05.193Z"
+    },
+    {
+      "id": "find-sast-005",
+      "projectId": "proj-netflix-web",
+      "category": "SAST",
+      "title": "Unsanitized User Input in DangerouslySetInnerHTML",
+      "cveId": null,
+      "packageName": null,
+      "installedVersion": null,
+      "fixedVersion": null,
+      "filePath": "src/components/VideoPlayer.tsx",
+      "lineNumber": 89,
+      "severity": "HIGH",
+      "cvssScore": 8.2,
+      "exploitability": "FUNCTIONAL",
+      "toolName": "SonarQube",
+      "description": "Potential Cross-Site Scripting (XSS) via unescaped string injection into dangerouslySetInnerHTML.",
+      "remediationGuidance": "Use DOMPurify.sanitize() or native JSX text escaping rather than direct HTML injection.",
+      "remediationStatus": "OPEN",
+      "firstDetectedAt": "2026-10-08T13:37:05.193Z",
+      "lastDetectedAt": "2026-10-09T08:37:05.193Z"
+    },
+    {
+      "id": "find-iac-006",
+      "projectId": "proj-netflix-clone",
+      "category": "IAC",
+      "title": "Kubernetes Pod Security Context missing readOnlyRootFilesystem",
+      "cveId": null,
+      "packageName": null,
+      "installedVersion": null,
+      "fixedVersion": null,
+      "filePath": "k8s/deployment.yaml",
+      "lineNumber": 31,
+      "severity": "MEDIUM",
+      "cvssScore": 5.5,
+      "exploitability": "UNPROVEN",
+      "toolName": "Checkov",
+      "description": "Pod specification does not enforce readOnlyRootFilesystem=true, permitting malicious tampering of container binaries.",
+      "remediationGuidance": "Configure securityContext.readOnlyRootFilesystem: true and mount an emptyDir volume for ephemeral cache.",
+      "remediationStatus": "OPEN",
+      "firstDetectedAt": "2026-10-03T13:37:05.193Z",
+      "lastDetectedAt": "2026-10-09T11:37:05.193Z"
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "pipe-exec-784",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 147,
+      "branch": "main",
+      "commitHash": "0f11fc1",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-10-09T13:47:17.603Z",
+      "endedAt": "2026-10-09T13:50:35.605Z",
+      "createdAt": "2026-10-09T13:50:35.605Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-309",
+      "projectId": "proj-netflix-web",
+      "executionNumber": 146,
+      "branch": "main",
+      "commitHash": "22e07c2",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-10-09T13:45:38.216Z",
+      "endedAt": "2026-10-09T13:48:56.217Z",
+      "createdAt": "2026-10-09T13:48:56.217Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-142",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 142,
+      "branch": "main",
+      "commitHash": "c7d81ef",
+      "commitMessage": "feat: optimize video streaming chunk caching with Redis",
+      "triggeredBy": "GitHub Webhook (push)",
+      "status": "PASSED",
+      "durationSeconds": 215,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-10-09T11:37:05.193Z",
+      "endedAt": "2026-10-09T11:43:05.193Z",
+      "createdAt": "2026-10-09T11:37:05.193Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-141",
+      "projectId": "proj-netflix-web",
+      "executionNumber": 141,
+      "branch": "master",
+      "commitHash": "b3a980c",
+      "commitMessage": "chore: update auth middleware and session persistence",
+      "triggeredBy": "Jenkins Scheduler",
+      "status": "FAILED",
+      "durationSeconds": 148,
+      "securityGatePassed": false,
+      "blockedReason": "MANDATORY GATE FAILURE: Hadolint detected container running as root user (DL3002). Cosign image signature blocked.",
+      "startedAt": "2026-10-09T08:37:05.193Z",
+      "endedAt": "2026-10-09T08:43:05.193Z",
+      "createdAt": "2026-10-09T08:37:05.193Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 16,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 32,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 41,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "FAILED",
+          "duration": 12,
+          "isGate": true,
+          "errorMessage": "DL3002: Last USER should not be root."
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "SKIPPED",
+          "duration": 0,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-140",
+      "projectId": "proj-pake-app",
+      "executionNumber": 140,
+      "branch": "main",
+      "commitHash": "f192b0e",
+      "commitMessage": "fix: improve IPC bridge security boundaries in desktop runtime",
+      "triggeredBy": "akshayvangari",
+      "status": "PASSED",
+      "durationSeconds": 182,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-10-08T13:37:05.193Z",
+      "endedAt": "2026-10-08T13:43:05.193Z",
+      "createdAt": "2026-10-08T13:37:05.193Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 25,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 30,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 15,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 38,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 20,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 7,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 5,
+          "isGate": false
+        }
+      ]
+    }
+  ],
+  "remediations": [
+    {
+      "id": "rem-job-001",
+      "projectId": "proj-netflix-clone",
+      "findingId": "find-cve-001",
+      "packageName": "jsonwebtoken",
+      "previousVersion": "8.5.1",
+      "proposedVersion": "9.0.0",
+      "targetBranch": "main",
+      "remediationBranch": "remediation/cve-2022-23529-jsonwebtoken-9.0.0",
+      "diffContent": "--- a/package.json\n+++ b/package.json\n@@ -24,3 +24,3 @@\n-    \"jsonwebtoken\": \"^8.5.1\",\n+    \"jsonwebtoken\": \"^9.0.0\",\n@@ -48,2 +48,2 @@\n     \"react\": \"^18.2.0\",\n     \"react-dom\": \"^18.2.0\"",
+      "status": "PROPOSED",
+      "compatibilityWarning": "Major version upgrade (8.x -> 9.x): verify jwt.verify signature parameters for strict string/Buffer secret constraints.",
+      "testRunStatus": "PASSED (Unit: 42/42 passed)",
+      "githubPrNumber": 14,
+      "githubPrUrl": "https://github.com/enterprise-devsecops/netflix-clone/pull/14",
+      "remediationLog": "[REMEDIATION AUDIT]\nBranch created: remediation/cve-2022-23529-jsonwebtoken-9.0.0\nDependency updated: jsonwebtoken 8.5.1 -> 9.0.0\nAutomated test suite triggered: 42 tests passed\nOWASP Dependency-Check verification: CVE-2022-23529 CLEARED\nStatus: Ready for engineer approval and automated merge.",
+      "createdBy": "DevSecOps Automated Agent",
+      "createdAt": "2026-10-08T01:37:05.193Z"
+    }
+  ],
+  "vaultSecrets": [
+    {
+      "id": "vlt-01",
+      "projectId": "proj-netflix-clone",
+      "secretKey": "POSTGRES_DB_PASSWORD",
+      "secretPath": "secret/data/production/netflix-clone/db",
+      "secretType": "DATABASE",
+      "storageBackend": "HashiCorp Vault KV v2",
+      "currentVersion": 3,
+      "status": "ACTIVE",
+      "maskedValue": "••••••••••••• [v3]",
+      "lastRotatedAt": "2026-09-27T13:37:05.193Z"
+    },
+    {
+      "id": "vlt-02",
+      "projectId": "proj-netflix-clone",
+      "secretKey": "JWT_HMAC_SIGNING_KEY",
+      "secretPath": "secret/data/production/netflix-clone/jwt",
+      "secretType": "API_KEY",
+      "storageBackend": "HashiCorp Vault KV v2",
+      "currentVersion": 2,
+      "status": "ACTIVE",
+      "maskedValue": "••••••••••••• [v2]",
+      "lastRotatedAt": "2026-10-04T13:37:05.193Z"
+    },
+    {
+      "id": "vlt-03",
+      "projectId": "proj-netflix-web",
+      "secretKey": "STRIPE_LIVE_API_KEY",
+      "secretPath": "secret/data/production/netflix-web/payments",
+      "secretType": "API_KEY",
+      "storageBackend": "HashiCorp Vault KV v2",
+      "currentVersion": 1,
+      "status": "ACTIVE",
+      "maskedValue": "sk_live_••••••••••••",
+      "lastRotatedAt": "2026-09-11T13:37:05.193Z"
+    },
+    {
+      "id": "vlt-04",
+      "projectId": "proj-netflix-web",
+      "secretKey": "TLS_WILDCARD_CERT_KEY",
+      "secretPath": "secret/data/production/netflix-web/certs",
+      "secretType": "CERTIFICATE",
+      "storageBackend": "HashiCorp Vault KV v2",
+      "currentVersion": 2,
+      "status": "ACTIVE",
+      "maskedValue": "••••••••••••• [RSA 4096]",
+      "lastRotatedAt": "2026-08-10T13:37:05.193Z"
+    },
+    {
+      "id": "vlt-05",
+      "projectId": "proj-pake-app",
+      "secretKey": "GITHUB_RELEASE_OAUTH_TOKEN",
+      "secretPath": "secret/data/production/pake/github",
+      "secretType": "CLOUD_CREDENTIAL",
+      "storageBackend": "HashiCorp Vault KV v2",
+      "currentVersion": 1,
+      "status": "ACTIVE",
+      "maskedValue": "token_••••••••••••••••",
+      "lastRotatedAt": "2026-09-24T13:37:05.193Z"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "flc-alert-001",
+      "ruleName": "Terminal shell in container",
+      "severity": "CRITICAL",
+      "podName": "netflix-clone-deploy-7789f-8x2d9",
+      "containerName": "netflix-clone-backend",
+      "namespace": "production",
+      "clusterName": "prod-k8s-cluster-01",
+      "description": "A interactive shell (sh/bash) was spawned inside running container by user root (UID=0, PID=1984).",
+      "eventMetadata": {
+        "proc_name": "bash",
+        "parent_proc": "containerd-shim",
+        "user": "root",
+        "image": "docker.enterprise.internal/netflix-clone:v2.4.1",
+        "terminal": "pts/0"
+      },
+      "acknowledged": false,
+      "timestamp": "2026-10-09T13:02:05.193Z"
+    },
+    {
+      "id": "flc-alert-002",
+      "ruleName": "Read sensitive file untrusted (/etc/shadow)",
+      "severity": "HIGH",
+      "podName": "netflix-web-core-66d49-4k9pl",
+      "containerName": "netflix-web-node",
+      "namespace": "production",
+      "clusterName": "prod-k8s-cluster-01",
+      "description": "Unauthorized read operation performed on /etc/shadow file after initial startup sequence completed.",
+      "eventMetadata": {
+        "proc_name": "node",
+        "fd_name": "/etc/shadow",
+        "user": "node",
+        "image": "docker.enterprise.internal/netflix-web:v1.9.0"
+      },
+      "acknowledged": false,
+      "timestamp": "2026-10-09T11:37:05.193Z"
+    },
+    {
+      "id": "flc-alert-003",
+      "ruleName": "Unexpected outbound connection to external IP",
+      "severity": "WARNING",
+      "podName": "pake-backend-9df21-72zxa",
+      "containerName": "pake-rust-worker",
+      "namespace": "production",
+      "clusterName": "prod-k8s-cluster-01",
+      "description": "Pod initiated an outbound TCP connection to unlisted external IP 185.220.101.5:443 not in egress policy.",
+      "eventMetadata": {
+        "dest_ip": "185.220.101.5",
+        "dest_port": 443,
+        "proto": "tcp",
+        "proc_name": "pake-worker"
+      },
+      "acknowledged": true,
+      "acknowledgedBy": "secops-oncall",
+      "timestamp": "2026-10-09T05:37:05.193Z"
+    },
+    {
+      "id": "flc-alert-004",
+      "ruleName": "Container run with elevated Linux capabilities",
+      "severity": "HIGH",
+      "podName": "netflix-web-core-66d49-4k9pl",
+      "containerName": "netflix-web-node",
+      "namespace": "production",
+      "clusterName": "prod-k8s-cluster-01",
+      "description": "Detected container executed with SYS_PTRACE capability, violating PodSecurityStandards restricted profile.",
+      "eventMetadata": {
+        "capability": "SYS_PTRACE",
+        "user": "root"
+      },
+      "acknowledged": true,
+      "acknowledgedBy": "secops-oncall",
+      "timestamp": "2026-10-08T13:37:05.193Z"
+    }
+  ],
+  "pods": [
+    {
+      "id": "pod-01",
+      "podName": "netflix-clone-deploy-7789f-8x2d9",
+      "namespace": "production",
+      "appLabel": "netflix-clone",
+      "status": "Running",
+      "image": "docker.enterprise.internal/netflix-clone:v2.4.1",
+      "restarts": 0,
+      "readyReplicas": "1/1",
+      "cpuCores": "0.24 cores",
+      "memoryMb": "312 MB",
+      "securityContextCompliant": true
+    },
+    {
+      "id": "pod-02",
+      "podName": "netflix-clone-deploy-7789f-1l4aa",
+      "namespace": "production",
+      "appLabel": "netflix-clone",
+      "status": "Running",
+      "image": "docker.enterprise.internal/netflix-clone:v2.4.1",
+      "restarts": 0,
+      "readyReplicas": "1/1",
+      "cpuCores": "0.19 cores",
+      "memoryMb": "298 MB",
+      "securityContextCompliant": true
+    },
+    {
+      "id": "pod-03",
+      "podName": "netflix-web-core-66d49-4k9pl",
+      "namespace": "production",
+      "appLabel": "netflix-web",
+      "status": "CrashLoopBackOff",
+      "image": "docker.enterprise.internal/netflix-web:v1.9.0",
+      "restarts": 4,
+      "readyReplicas": "0/1",
+      "cpuCores": "0.45 cores",
+      "memoryMb": "512 MB",
+      "securityContextCompliant": false
+    },
+    {
+      "id": "pod-04",
+      "podName": "netflix-web-core-66d49-9j3bx",
+      "namespace": "production",
+      "appLabel": "netflix-web",
+      "status": "Running",
+      "image": "docker.enterprise.internal/netflix-web:v1.9.0",
+      "restarts": 1,
+      "readyReplicas": "1/1",
+      "cpuCores": "0.38 cores",
+      "memoryMb": "480 MB",
+      "securityContextCompliant": false
+    },
+    {
+      "id": "pod-05",
+      "podName": "pake-backend-9df21-72zxa",
+      "namespace": "production",
+      "appLabel": "pake-app",
+      "status": "Running",
+      "image": "docker.enterprise.internal/pake:v1.0.4",
+      "restarts": 0,
+      "readyReplicas": "1/1",
+      "cpuCores": "0.08 cores",
+      "memoryMb": "124 MB",
+      "securityContextCompliant": true
+    },
+    {
+      "id": "pod-06",
+      "falcoDaemon": true,
+      "podName": "falco-daemonset-worker-k882a",
+      "namespace": "falco-system",
+      "appLabel": "falco",
+      "status": "Running",
+      "image": "falcosecurity/falco:0.37.1",
+      "restarts": 0,
+      "readyReplicas": "1/1",
+      "cpuCores": "0.12 cores",
+      "memoryMb": "194 MB",
+      "securityContextCompliant": true
+    }
+  ],
+  "complianceFrameworks": [
+    {
+      "id": "soc2",
+      "name": "SOC 2 Type II",
+      "version": "2022 Trust Services Criteria",
+      "score": 84,
+      "passed": 15,
+      "warning": 2,
+      "failed": 1,
+      "total": 18
+    },
+    {
+      "id": "iso27001",
+      "name": "ISO/IEC 27001:2022",
+      "version": "Annex A Controls",
+      "score": 88,
+      "passed": 19,
+      "warning": 2,
+      "failed": 1,
+      "total": 22
+    },
+    {
+      "id": "nist80053",
+      "name": "NIST SP 800-53",
+      "version": "Rev. 5 Security Controls",
+      "score": 79,
+      "passed": 20,
+      "warning": 3,
+      "failed": 2,
+      "total": 25
+    },
+    {
+      "id": "pci-dss",
+      "name": "PCI DSS v4.0",
+      "version": "Payment Card Industry",
+      "score": 91,
+      "passed": 14,
+      "warning": 2,
+      "failed": 0,
+      "total": 16
+    },
+    {
+      "id": "hipaa",
+      "name": "HIPAA Security Rule",
+      "version": "45 CFR Part 160 & 164",
+      "score": 86,
+      "passed": 12,
+      "warning": 1,
+      "failed": 1,
+      "total": 14
+    }
+  ],
+  "complianceControls": [
+    {
+      "id": "ctrl-soc2-01",
+      "frameworkId": "soc2",
+      "controlCode": "CC6.1",
+      "controlName": "Logical Access and Credentials Protection",
+      "requirements": "The entity implements logical access security software, infrastructure, and architectures over protected assets.",
+      "category": "Access Control",
+      "severity": "CRITICAL",
+      "status": "WARNING",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - Gitleaks Engine]\nScan ID: scn-2026-10-09-001\nResult: 1 exposed AWS key detected in netflix-clone repo.\nVault Status: Vault KV v2 sync verified for 5 active credentials.\nEvaluation: Control flagged for warning due to lingering secret in source tree.",
+      "linkedProject": "Netflix Clone",
+      "remediationGuidance": "Revoke exposed AWS secret key in AWS console and confirm deletion from git history using git-filter-repo."
+    },
+    {
+      "id": "ctrl-soc2-02",
+      "frameworkId": "soc2",
+      "controlCode": "CC6.6",
+      "controlName": "Vulnerability Management Before Deployment",
+      "requirements": "Boundary protection, container scanning, and dependency analysis are implemented prior to production release.",
+      "category": "Secure SDLC",
+      "severity": "CRITICAL",
+      "status": "PASS",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - Trivy & OWASP DC]\nPipeline #142 Gate: PASSED\nTrivy Image Scan: 0 Critical vulnerabilities in production container image.\nOWASP Dependency-Check: High/Critical gate threshold passed.\nCosign Signature: Verified sha256:4a81cf26...",
+      "linkedProject": "Netflix Clone",
+      "remediationGuidance": "Maintain automated gate threshold in Jenkinsfile and Trivy security gate settings."
+    },
+    {
+      "id": "ctrl-soc2-03",
+      "frameworkId": "soc2",
+      "controlCode": "CC6.8",
+      "controlName": "Runtime Intrusion Detection & Threat Prevention",
+      "requirements": "The entity implements controls to prevent or detect unauthorized code execution or container tampering at runtime.",
+      "category": "Runtime Security",
+      "severity": "HIGH",
+      "status": "FAIL",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - Falco DaemonSet]\nRule: Terminal shell in container\nSeverity: CRITICAL\nPod: netflix-clone-deploy-7789f-8x2d9\nContainer: netflix-clone-backend\nActive alert acknowledged: false. Control marked FAIL.",
+      "linkedProject": "Netflix Clone",
+      "remediationGuidance": "Investigate container shell access immediately. Restrict kubectl exec permissions in RBAC role definitions."
+    },
+    {
+      "id": "ctrl-iso-01",
+      "frameworkId": "iso27001",
+      "controlCode": "A.8.28",
+      "controlName": "Secure Coding & Application Security Testing",
+      "requirements": "Secure coding principles must be applied to software development. Static analysis and peer reviews required.",
+      "category": "Development Security",
+      "severity": "HIGH",
+      "status": "PASS",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - SonarQube & Checkov]\nSonarQube Quality Gate: PASSED for netflix-clone (Reliability: A, Security: A).\nCode Coverage: 84.2%.\nCheckov IaC rules: 28 evaluated, 27 passed, 1 medium warning.",
+      "linkedProject": "Netflix Clone",
+      "remediationGuidance": "Address readOnlyRootFilesystem warning in k8s deployment manifest."
+    },
+    {
+      "id": "ctrl-iso-02",
+      "frameworkId": "iso27001",
+      "controlCode": "A.8.9",
+      "controlName": "Configuration Management & Privilege Restriction",
+      "requirements": "Configurations including containers, operating systems, and services shall be securely managed to prevent root misuse.",
+      "category": "System Hardening",
+      "severity": "CRITICAL",
+      "status": "FAIL",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - Hadolint Engine]\nProject: netflix-web\nDockerfile Check: DL3002 Violation. Container image builds and executes with UID 0 (root).\nPipeline Execution #141 was BLOCKED by Mandatory Gate.",
+      "linkedProject": "Netflix Web",
+      "remediationGuidance": "Update Dockerfile with non-root user directive before container entrypoint."
+    },
+    {
+      "id": "ctrl-nist-01",
+      "frameworkId": "nist80053",
+      "controlCode": "AC-2",
+      "controlName": "Account Management and Least Privilege",
+      "requirements": "Manage information system accounts and enforce least privilege in containerized execution contexts.",
+      "category": "Access Control",
+      "severity": "HIGH",
+      "status": "WARNING",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - Kubernetes API Audit]\nCluster: prod-k8s-cluster-01\nPod: netflix-web-core-66d49-4k9pl running with excessive capabilities (SYS_PTRACE).\nFalco Rule Triggered: Container run with elevated Linux capabilities.",
+      "linkedProject": "Netflix Web",
+      "remediationGuidance": "Drop all default capabilities and remove SYS_PTRACE in securityContext.capabilities.drop: [ALL]."
+    },
+    {
+      "id": "ctrl-pci-01",
+      "frameworkId": "pci-dss",
+      "controlCode": "Req 6.4.2",
+      "controlName": "Automated Technical Attack Detection in Web Applications",
+      "requirements": "Public-facing web applications are protected against known attacks with automated runtime monitoring and DAST.",
+      "category": "Payment Security",
+      "severity": "CRITICAL",
+      "status": "PASS",
+      "technicalEvidence": "[AUTOMATED EVIDENCE LOG - Runtime WAF & Falco]\nActive egress filters in place. All TLS endpoints enforce TLS 1.3.\nContinuous container integrity validated via Cosign image verification.",
+      "linkedProject": "Netflix Web",
+      "remediationGuidance": "Continue quarterly penetration tests and continuous image signing."
+    }
+  ],
+  "integrations": [
+    {
+      "id": "int-github",
+      "name": "github",
+      "displayName": "GitHub Actions & Repository Integration",
+      "category": "SCM",
+      "endpointUrl": "https://api.github.com",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:50:13.653Z"
+    },
+    {
+      "id": "int-jenkins",
+      "name": "jenkins",
+      "displayName": "Jenkins Enterprise CI/CD Orchestrator",
+      "category": "CI_CD",
+      "endpointUrl": "http://jenkins.ci.internal:8080",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-vault",
+      "name": "vault",
+      "displayName": "HashiCorp Vault KV Secrets Engine",
+      "category": "SECRETS",
+      "endpointUrl": "http://vault.security.internal:8200",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-trivy",
+      "name": "trivy",
+      "displayName": "Aqua Security Trivy Scanner",
+      "category": "SCANNER",
+      "endpointUrl": "http://trivy-server.internal:4954",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-sonarqube",
+      "name": "sonarqube",
+      "displayName": "SonarQube Enterprise Code Quality",
+      "category": "SAST",
+      "endpointUrl": "http://sonarqube.internal:9000",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-gitleaks",
+      "name": "gitleaks",
+      "displayName": "Gitleaks Secret Detection",
+      "category": "SECRETS",
+      "endpointUrl": "cli://gitleaks:v8.18.2",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-owasp-dc",
+      "name": "owasp_dependency_check",
+      "displayName": "OWASP Dependency-Check",
+      "category": "SCA",
+      "endpointUrl": "cli://dependency-check:v9.0.8",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-hadolint",
+      "name": "hadolint",
+      "displayName": "Hadolint Dockerfile Linter",
+      "category": "LINTER",
+      "endpointUrl": "cli://hadolint:v2.12.0",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-checkov",
+      "name": "checkov",
+      "displayName": "Bridgecrew Checkov IaC Scanner",
+      "category": "IAC",
+      "endpointUrl": "cli://checkov:v3.2.35",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-cosign",
+      "name": "cosign",
+      "displayName": "Sigstore Cosign Image Signer",
+      "category": "SIGNING",
+      "endpointUrl": "cli://cosign:v2.2.3",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-falco",
+      "name": "falco",
+      "displayName": "Sysdig Falco Runtime Threat Detection",
+      "category": "RUNTIME",
+      "endpointUrl": "http://falco-grpc.falco-system:5060",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    },
+    {
+      "id": "int-kubernetes",
+      "name": "kubernetes",
+      "displayName": "Kubernetes Production Cluster",
+      "category": "CLUSTER",
+      "endpointUrl": "https://k8s-api.prod.internal:6443",
+      "status": "CONNECTED",
+      "lastCheckedAt": "2026-10-09T13:37:05.193Z"
+    }
+  ],
+  "settings": {
+    "platformName": "DevSecOps Enterprise Security & Monitoring Platform",
+    "defaultBranch": "main",
+    "autoGenerateK8s": true,
+    "blockDeploymentOnCritical": true,
+    "blockDeploymentOnSecrets": true,
+    "requireImageSigning": true,
+    "requireNonRoot": true,
+    "requireDependencyScan": true,
+    "requireImageScan": true,
+    "notificationCriticalFindings": true,
+    "notificationFailedPipelines": true,
+    "notificationRuntimeAlerts": true,
+    "notificationComplianceWarnings": true,
+    "emailRecipients": "secops-team@enterprise.internal, devops-lead@enterprise.internal",
+    "slackWebhookUrl": "",
+    "teamsWebhookUrl": ""
+  }
+}

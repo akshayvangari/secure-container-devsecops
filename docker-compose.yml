@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: devsecops-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: devsecops_db
+      POSTGRES_USER: devsecops_user
+      POSTGRES_PASSWORD: devsecops_secure_pass_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devsecops_user -d devsecops_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - devsecops-net
+
+  vault:
+    image: hashicorp/vault:1.15.4
+    container_name: devsecops-vault
+    restart: unless-stopped
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "devsecops-vault-root-token"
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    ports:
+      - "8200:8200"
+    networks:
+      - devsecops-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devsecops-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      vault:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/devsecops_db
+      SPRING_DATASOURCE_USERNAME: devsecops_user
+      SPRING_DATASOURCE_PASSWORD: devsecops_secure_pass_2026
+      VAULT_ADDR: http://vault:8200
+      VAULT_TOKEN: devsecops-vault-root-token
+      DEMO_MODE: "true"
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    networks:
+      - devsecops-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: devsecops-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:8080"
+    networks:
+      - devsecops-net
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  devsecops-net:
+    driver: bridge

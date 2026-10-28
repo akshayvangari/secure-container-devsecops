@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: secure-container-devsecops-backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/devsecops_db}
+    username: ${SPRING_DATASOURCE_USERNAME:devsecops_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:devsecops_secure_pass_2026}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+# DevSecOps Integration Endpoints
+devsecops:
+  demo-mode: ${DEMO_MODE:true}
+  vault:
+    url: ${VAULT_ADDR:http://localhost:8200}
+    token: ${VAULT_TOKEN:demo-vault-token}
+    kv-mount: secret
+  falco:
+    webhook-path: /api/runtime/falco-webhook
+    shared-secret: ${FALCO_SECRET:devsecops-falco-secret-key}
+  github:
+    api-url: https://api.github.com
+    token: ${GITHUB_TOKEN:}
+  jenkins:
+    url: ${JENKINS_URL:http://localhost:8080}
+    user: ${JENKINS_USER:admin}
+    token: ${JENKINS_API_TOKEN:}
+  security-policies:
+    block-on-critical-cve: true
+    block-on-exposed-secrets: true
+    require-cosign-signing: true
+    require-non-root-container: true
