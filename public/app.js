@@ -301,36 +301,6 @@
       <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
         <!-- Left Column -->
         <div>
-          <!-- Vulnerability Trends Chart Card -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                ${icons.monitoring}
-                <span>Vulnerability Trends (Past 30 Days)</span>
-              </div>
-              <span class="badge badge-pass">34% Resolved</span>
-            </div>
-            <div class="card-body">
-              <div style="height: 180px; width: 100%; display: flex; align-items: flex-end; gap: 14px; padding-top: 20px;">
-                ${[
-                  { label: 'Day 1', crit: 4, high: 12, score: 62 },
-                  { label: 'Day 5', crit: 3, high: 11, score: 66 },
-                  { label: 'Day 10', crit: 3, high: 10, score: 69 },
-                  { label: 'Day 15', crit: 2, high: 9, score: 73 },
-                  { label: 'Day 20', crit: 2, high: 8, score: 75 },
-                  { label: 'Day 25', crit: 1, high: 7, score: 78 },
-                  { label: 'Day 30', crit: 1, high: 6, score: 81 }
-                ].map(item => `
-                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                    <div style="font-size: 10px; color: #64748b;">${item.score}%</div>
-                    <div style="width: 100%; height: ${item.score * 1.5}px; background: linear-gradient(180deg, #3b82f6, #93c5fd); border-radius: 4px;"></div>
-                    <span style="font-size: 11px; color: #64748b;">${item.label}</span>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-
           <!-- Project Security Scores -->
           <div class="card">
             <div class="card-header">
