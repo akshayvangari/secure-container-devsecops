@@ -1130,6 +1130,31 @@ Status: Ready for approval.`,
     return sendJson(res, 200, db.vaultSecrets);
   }
 
+  const vaultRevealMatch = pathname.match(/^\/api\/vault\/secrets\/([^/]+)\/reveal$/);
+  if (vaultRevealMatch && req.method === 'GET') {
+    const vltId = vaultRevealMatch[1];
+    const sec = db.vaultSecrets.find(s => s.id === vltId);
+    if (!sec) return sendJson(res, 404, { error: 'Secret not found' });
+    const mockValues = {
+      'POSTGRES_DB_PASSWORD': 'pg_prod_sec_994a8f9c1b2e4d',
+      'JWT_HMAC_SIGNING_KEY': 'hmac-sha256-super-secret-key-32b',
+      'STRIPE_LIVE_API_KEY': 'sk_live_51MzQpL2eZvKYlo2CLX4pQ',
+      'TLS_WILDCARD_CERT_KEY': '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQD...',
+      'GITHUB_RELEASE_OAUTH_TOKEN': 'gho_8f9c1b2e4d3a7e5f6a0b9c8d7e6f5a4b'
+    };
+    const plaintext = mockValues[sec.secretKey] || `secret_val_${sec.secretKey.toLowerCase()}_v${sec.currentVersion}`;
+    return sendJson(res, 200, {
+      id: sec.id,
+      secretKey: sec.secretKey,
+      secretPath: sec.secretPath,
+      secretType: sec.secretType,
+      currentVersion: sec.currentVersion,
+      plaintextValue: plaintext,
+      leasedDurationSeconds: 3600,
+      accessor: 'vault-acc-' + sec.id
+    });
+  }
+
   if (pathname === '/api/vault/secrets' && req.method === 'POST') {
     const body = await parseBody(req);
     const newSecret = {

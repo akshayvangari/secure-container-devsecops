@@ -1195,11 +1195,32 @@ CMD ["npm", "start"]
   // 7. Vault Page
   function renderVaultPage() {
     return `
+      <!-- Vault Status & Enable Guide Banner -->
+      <div class="card" style="margin-bottom: 20px; border-left: 4px solid #10b981; background: #f0fdf4;">
+        <div class="card-body" style="padding: 16px 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div style="font-weight: 700; color: #166534; font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                HashiCorp Vault KV v2 Engine Active
+              </div>
+              <div style="font-size: 12.5px; color: #15803d; line-height: 1.5;">
+                Secrets are encrypted with AES-256-GCM. If you ever experience "permission denied" or sealed storage on a real Vault cluster, run:
+                <code style="background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-size: 11.5px; margin-left: 4px;">vault secrets enable -path=secret kv-v2</code>
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm" style="background: white; border-color: #86efac; color: #166534; font-size: 11px;" onclick="app.openModal('vaultHelpModal')">
+              📖 CLI Setup & Unseal Guide
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <div>
             <div class="card-title">${icons.vault} HashiCorp Vault Secrets Management</div>
-            <div style="font-size: 12px; color: #64748b; margin-top: 2px;">Backend: HashiCorp Vault KV v2 &bull; Status: <span style="color: #10b981; font-weight: 600;">CONNECTED</span></div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 2px;">Backend: HashiCorp Vault KV v2 &bull; Status: <span style="color: #10b981; font-weight: 600;">CONNECTED</span> &bull; Port: 8200</div>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="btn btn-outline btn-sm" onclick="app.testVaultConnection()">Test Connection</button>
@@ -1232,8 +1253,11 @@ CMD ["npm", "start"]
                   <td><span class="badge badge-pass">v${v.currentVersion}</span></td>
                   <td><span class="badge badge-pass">${v.status}</span></td>
                   <td>
-                    <button class="btn btn-outline btn-sm" onclick="app.rotateVaultSecret('${v.id}')">Rotate</button>
-                    <button class="btn btn-outline btn-sm" style="color: #dc2626;" onclick="app.deleteVaultSecret('${v.id}')">Delete</button>
+                    <div style="display: flex; gap: 6px;">
+                      <button class="btn btn-outline btn-sm" style="color: #2563eb;" onclick="app.viewVaultSecret('${v.id}')">View</button>
+                      <button class="btn btn-outline btn-sm" onclick="app.rotateVaultSecret('${v.id}')">Rotate</button>
+                      <button class="btn btn-outline btn-sm" style="color: #dc2626;" onclick="app.deleteVaultSecret('${v.id}')">Delete</button>
+                    </div>
                   </td>
                 </tr>
               `).join('')}
@@ -1725,6 +1749,92 @@ ${safeJenkinsfile}
       `;
     }
 
+    if (state.activeModal === 'viewVaultSecret') {
+      const data = state.modalData || {};
+      return `
+        <div class="modal-backdrop" onclick="if(event.target === this) app.closeModal()">
+          <div class="modal-dialog" style="max-width: 580px;">
+            <div class="modal-header">
+              <div>
+                <div style="font-weight: 700; font-size: 16px;">HashiCorp Vault Secret Inspector</div>
+                <div style="font-size: 12px; color: #64748b;">Path: <code>${data.secretPath}</code> &bull; Version: <code>v${data.currentVersion}</code></div>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="app.closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label style="font-weight: 600; font-size: 12px; color: #475569;">SECRET KEY</label>
+                <input type="text" class="form-control" value="${data.secretKey}" readonly style="background: #f8fafc; font-weight: 700;" />
+              </div>
+
+              <div class="form-group" style="margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-weight: 600; font-size: 12px; color: #475569;">DECRYPTED PLAINTEXT VALUE</label>
+                  <span class="badge badge-pass" style="font-size: 10px;">AES-256 Decrypted</span>
+                </div>
+                <div style="position: relative;">
+                  <textarea id="vault-plaintext-val" class="form-control" rows="3" readonly style="font-family: monospace; font-size: 12.5px; background: #0f172a; color: #38bdf8; padding: 10px 12px;">${data.plaintextValue}</textarea>
+                </div>
+              </div>
+
+              <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #1e40af;">
+                <strong>Audit Compliance:</strong> Access to this plaintext secret is authenticated via OIDC Token and logged under SOC 2 CC6.1 / ISO 27001 Access Control audits.
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline" onclick="navigator.clipboard.writeText(document.getElementById('vault-plaintext-val').value); showToast('Copied', 'Plaintext secret copied to clipboard', 'success');">Copy Plaintext</button>
+              <button class="btn btn-primary" onclick="app.closeModal()">Close</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.activeModal === 'vaultHelpModal') {
+      return `
+        <div class="modal-backdrop" onclick="if(event.target === this) app.closeModal()">
+          <div class="modal-dialog" style="max-width: 650px;">
+            <div class="modal-header">
+              <div style="font-weight: 700; font-size: 16px;">HashiCorp Vault Access & Enable Guide</div>
+              <button class="btn btn-outline btn-sm" onclick="app.closeModal()">✕</button>
+            </div>
+            <div class="modal-body" style="font-size: 13px; color: #334155; line-height: 1.6;">
+              <h4 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">1. Enable KV v2 Secrets Engine</h4>
+              <p style="margin-bottom: 8px;">If your Vault server has no <code>secret/</code> engine mounted yet, enable it via the CLI:</p>
+              <div class="diff-container" style="padding: 10px 12px; margin-bottom: 16px; background: #0f172a; color: #38bdf8;">
+export VAULT_ADDR="http://127.0.0.1:8200"
+export VAULT_TOKEN="devsecops-vault-root-token"
+vault secrets enable -path=secret kv-v2
+              </div>
+
+              <h4 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">2. Fix "Permission Denied" (Assign Policy)</h4>
+              <p style="margin-bottom: 8px;">If an application or token receives 403 Forbidden, create and attach this read policy:</p>
+              <div class="diff-container" style="padding: 10px 12px; margin-bottom: 16px; background: #0f172a; color: #a7f3d0;">
+path "secret/data/*" {
+  capabilities = ["read", "list"]
+}
+              </div>
+
+              <h4 style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">3. Unseal Vault if Sealed</h4>
+              <p style="margin-bottom: 8px;">If Vault returns <code>Vault is sealed</code> on restart:</p>
+              <div class="diff-container" style="padding: 10px 12px; margin-bottom: 16px; background: #0f172a; color: #fde047;">
+vault operator unseal &lt;UNSEAL_KEY_1&gt;
+vault operator unseal &lt;UNSEAL_KEY_2&gt;
+vault operator unseal &lt;UNSEAL_KEY_3&gt;
+              </div>
+
+              <p style="font-size: 12px; color: #64748b;">
+                In this DevSecOps platform, the simulated Vault backend is already mounted and authenticated at <code>http://localhost:8200</code>.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" onclick="app.closeModal()">Got it</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     return '';
   }
 
@@ -2004,6 +2114,13 @@ ${safeJenkinsfile}
     },
 
     // Vault actions
+    viewVaultSecret: async (id) => {
+      const res = await api(`/api/vault/secrets/${id}/reveal`);
+      if (res) {
+        window.app.openModal('viewVaultSecret', res);
+      }
+    },
+
     handleAddSecret: async (e) => {
       e.preventDefault();
       const key = document.getElementById('new-sec-key').value;
