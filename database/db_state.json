@@ -25,7 +25,7 @@
       "hasDockerfile": true,
       "hasK8sManifest": true,
       "hasIac": true,
-      "lastScannedAt": "2026-10-09T13:48:53.453Z"
+      "lastScannedAt": "2026-11-09T16:50:01.744Z"
     },
     {
       "id": "proj-netflix-web",
@@ -45,14 +45,14 @@
       "exposedSecretCount": 0,
       "pipelineStatus": "PASSED",
       "projectStatus": "ACTIVE",
-      "serverStatus": "STOPPED",
+      "serverStatus": "RUNNING",
       "devServerPort": 3002,
       "dependencyCount": 98,
       "fileCount": 240,
       "hasDockerfile": true,
       "hasK8sManifest": true,
       "hasIac": false,
-      "lastScannedAt": "2026-10-09T13:48:46.075Z"
+      "lastScannedAt": "2026-11-09T16:46:18.568Z"
     },
     {
       "id": "proj-pake-app",
@@ -211,6 +211,1230 @@
     }
   ],
   "pipelines": [
+    {
+      "id": "pipe-exec-123",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 159,
+      "branch": "main",
+      "commitHash": "01dfce1",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:46:59.111Z",
+      "endedAt": "2026-11-09T16:50:17.111Z",
+      "createdAt": "2026-11-09T16:50:17.111Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-105",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 158,
+      "branch": "main",
+      "commitHash": "30de4fa",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:46:56.361Z",
+      "endedAt": "2026-11-09T16:50:14.361Z",
+      "createdAt": "2026-11-09T16:50:14.361Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-388",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 157,
+      "branch": "main",
+      "commitHash": "77267ec",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:46:54.797Z",
+      "endedAt": "2026-11-09T16:50:12.797Z",
+      "createdAt": "2026-11-09T16:50:12.797Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-379",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 156,
+      "branch": "main",
+      "commitHash": "d5a7040",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:46:41.495Z",
+      "endedAt": "2026-11-09T16:49:59.495Z",
+      "createdAt": "2026-11-09T16:49:59.495Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-455",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 155,
+      "branch": "main",
+      "commitHash": "35822b9",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:46:36.583Z",
+      "endedAt": "2026-11-09T16:49:54.583Z",
+      "createdAt": "2026-11-09T16:49:54.583Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-366",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 154,
+      "branch": "main",
+      "commitHash": "a042349",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:42:15.610Z",
+      "endedAt": "2026-11-09T16:45:33.610Z",
+      "createdAt": "2026-11-09T16:45:33.610Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-544",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 153,
+      "branch": "main",
+      "commitHash": "33d5f2f",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:42:12.977Z",
+      "endedAt": "2026-11-09T16:45:30.977Z",
+      "createdAt": "2026-11-09T16:45:30.977Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-404",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 152,
+      "branch": "main",
+      "commitHash": "70c509a",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:42:00.914Z",
+      "endedAt": "2026-11-09T16:45:18.914Z",
+      "createdAt": "2026-11-09T16:45:18.914Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-533",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 151,
+      "branch": "main",
+      "commitHash": "2d2dd09",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:40:54.027Z",
+      "endedAt": "2026-11-09T16:44:12.027Z",
+      "createdAt": "2026-11-09T16:44:12.027Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-234",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 150,
+      "branch": "main",
+      "commitHash": "80296da",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:39:56.163Z",
+      "endedAt": "2026-11-09T16:43:14.163Z",
+      "createdAt": "2026-11-09T16:43:14.163Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-809",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 149,
+      "branch": "main",
+      "commitHash": "9fbfa5f",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:39:40.061Z",
+      "endedAt": "2026-11-09T16:42:58.061Z",
+      "createdAt": "2026-11-09T16:42:58.061Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
+    {
+      "id": "pipe-exec-557",
+      "projectId": "proj-netflix-clone",
+      "executionNumber": 148,
+      "branch": "main",
+      "commitHash": "e753d07",
+      "commitMessage": "manual: trigger comprehensive DevSecOps pipeline verification",
+      "triggeredBy": "DevSecOps Console User",
+      "status": "PASSED",
+      "durationSeconds": 198,
+      "securityGatePassed": true,
+      "blockedReason": null,
+      "startedAt": "2026-11-09T16:39:33.182Z",
+      "endedAt": "2026-11-09T16:42:51.182Z",
+      "createdAt": "2026-11-09T16:42:51.182Z",
+      "stages": [
+        {
+          "name": "Git Clone & Vault Sync",
+          "toolName": "Vault KV v2",
+          "status": "PASSED",
+          "duration": 12,
+          "isGate": false
+        },
+        {
+          "name": "Secret Detection",
+          "toolName": "Gitleaks v8.18",
+          "status": "PASSED",
+          "duration": 14,
+          "isGate": true
+        },
+        {
+          "name": "Static Code Analysis",
+          "toolName": "SonarQube 10.4",
+          "status": "PASSED",
+          "duration": 28,
+          "isGate": true
+        },
+        {
+          "name": "Dependency Vulnerability Scan",
+          "toolName": "OWASP Dependency-Check",
+          "status": "PASSED",
+          "duration": 35,
+          "isGate": true
+        },
+        {
+          "name": "Dockerfile Linting",
+          "toolName": "Hadolint v2.12",
+          "status": "PASSED",
+          "duration": 10,
+          "isGate": true
+        },
+        {
+          "name": "Infrastructure Security",
+          "toolName": "Checkov v3.2",
+          "status": "PASSED",
+          "duration": 18,
+          "isGate": true
+        },
+        {
+          "name": "Container Build",
+          "toolName": "Docker Buildx",
+          "status": "PASSED",
+          "duration": 42,
+          "isGate": false
+        },
+        {
+          "name": "Container Image Scan",
+          "toolName": "Trivy v0.50",
+          "status": "PASSED",
+          "duration": 22,
+          "isGate": true
+        },
+        {
+          "name": "Container Image Signing",
+          "toolName": "Cosign v2.2",
+          "status": "PASSED",
+          "duration": 8,
+          "isGate": true
+        },
+        {
+          "name": "Kubernetes Manifest Validation",
+          "toolName": "kubeconform",
+          "status": "PASSED",
+          "duration": 9,
+          "isGate": true
+        },
+        {
+          "name": "Deployment",
+          "toolName": "Helm / kubectl",
+          "status": "PASSED",
+          "duration": 11,
+          "isGate": false
+        },
+        {
+          "name": "Post-Deployment Verification",
+          "toolName": "Falco / Health Probe",
+          "status": "PASSED",
+          "duration": 6,
+          "isGate": false
+        }
+      ]
+    },
     {
       "id": "pipe-exec-784",
       "projectId": "proj-netflix-clone",

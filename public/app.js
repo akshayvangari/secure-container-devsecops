@@ -39,6 +39,59 @@
     ]
   };
 
+  // Modern Toast Notification System (replaces disruptive browser alerts)
+  function getOrCreateToastContainer() {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      document.body.appendChild(container);
+    }
+    return container;
+  }
+
+  function showToast(title, message = '', type = 'success', duration = 3800) {
+    const container = getOrCreateToastContainer();
+    const toast = document.createElement('div');
+    toast.className = `toast-item toast-${type}`;
+
+    const iconMap = {
+      success: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',
+      info: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+      warning: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      error: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+    };
+
+    toast.innerHTML = `
+      <div class="toast-icon">${iconMap[type] || iconMap.info}</div>
+      <div class="toast-content">
+        <div class="toast-title">${title}</div>
+        ${message ? `<div class="toast-message">${message}</div>` : ''}
+      </div>
+      <button class="toast-close" title="Dismiss">✕</button>
+    `;
+
+    const closeBtn = toast.querySelector('.toast-close');
+    const dismiss = () => {
+      toast.classList.add('toast-hiding');
+      setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 250);
+    };
+
+    closeBtn.addEventListener('click', dismiss);
+    container.appendChild(toast);
+
+    if (duration > 0) {
+      setTimeout(dismiss, duration);
+    }
+  }
+
+  // Intercept any accidental browser window.alert calls
+  window.alert = function(msg) {
+    showToast('Notice', String(msg).replace(/\n/g, ' • '), 'info');
+  };
+
   // API helper with fallback to cached database
   async function api(path, options = {}) {
     try {
@@ -1593,6 +1646,85 @@ ${data.kubernetesYaml}
       `;
     }
 
+    if (state.activeModal === 'jenkinsfilePreview') {
+      const data = state.modalData || {};
+      const safeJenkinsfile = (data.jenkinsfile || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return `
+        <div class="modal-backdrop" onclick="if(event.target === this) app.closeModal()">
+          <div class="modal-dialog" style="max-width: 800px;">
+            <div class="modal-header">
+              <div style="font-weight: 700; font-size: 16px;">12-Stage CI/CD Jenkinsfile Pipeline Template</div>
+              <button class="btn btn-outline btn-sm" onclick="app.closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+              <p style="font-size: 12.5px; color: #64748b; margin-bottom: 12px;">
+                Complete enterprise declarative pipeline configuration incorporating Gitleaks, SonarQube, Hadolint, Checkov, Trivy, Cosign, and Kubernetes validation.
+              </p>
+              <div class="diff-container" style="max-height: 380px; overflow-y: auto;">
+${safeJenkinsfile}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline" onclick="navigator.clipboard.writeText(document.querySelector('.modal-dialog .diff-container').innerText); app.toast('Copied', 'Jenkinsfile copied to clipboard', 'success');">Copy to Clipboard</button>
+              <button class="btn btn-primary" onclick="app.closeModal()">Done</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.activeModal === 'confirmDeleteProject') {
+      const data = state.modalData || {};
+      return `
+        <div class="modal-backdrop" onclick="if(event.target === this) app.closeModal()">
+          <div class="modal-dialog" style="max-width: 480px;">
+            <div class="modal-header" style="border-bottom-color: #fee2e2;">
+              <div style="font-weight: 700; font-size: 16px; color: #b91c1c;">Delete Project Registry</div>
+              <button class="btn btn-outline btn-sm" onclick="app.closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+              <p style="font-size: 13.5px; color: #334155; margin-bottom: 8px;">
+                Are you sure you want to delete this repository from the registry?
+              </p>
+              <p style="font-size: 12px; color: #64748b;">
+                This will remove associated scan histories, security findings, and scheduled CI/CD executions.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+              <button class="btn btn-danger" style="background: #ef4444; border-color: #dc2626; color: white;" onclick="app.executeDeleteProject('${data.id}')">Confirm Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.activeModal === 'confirmDeleteSecret') {
+      const data = state.modalData || {};
+      return `
+        <div class="modal-backdrop" onclick="if(event.target === this) app.closeModal()">
+          <div class="modal-dialog" style="max-width: 480px;">
+            <div class="modal-header" style="border-bottom-color: #fee2e2;">
+              <div style="font-weight: 700; font-size: 16px; color: #b91c1c;">Delete Vault Secret</div>
+              <button class="btn btn-outline btn-sm" onclick="app.closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+              <p style="font-size: 13.5px; color: #334155; margin-bottom: 8px;">
+                Delete secret credential from HashiCorp Vault KV v2 engine?
+              </p>
+              <p style="font-size: 12px; color: #64748b;">
+                Any running workloads referencing this secret key will be notified of eviction.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+              <button class="btn btn-danger" style="background: #ef4444; border-color: #dc2626; color: white;" onclick="app.executeDeleteVaultSecret('${data.id}')">Delete Secret</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     return '';
   }
 
@@ -1749,7 +1881,7 @@ ${data.kubernetesYaml}
         const f = state.findings.find(item => item.id === findingId);
         if (f) f.remediationStatus = 'PATCH_PROPOSED';
         window.app.closeModal();
-        alert(`Remediation job created on branch: ${res.remediationBranch}\nAutomated testing passed.`);
+        showToast('Patch Created', `Remediation job created on branch ${res.remediationBranch}. Automated testing passed.`, 'success');
         renderApp();
       }
     },
@@ -1757,7 +1889,7 @@ ${data.kubernetesYaml}
     approveRemediation: async (jobId) => {
       const res = await api(`/api/security/remediations/${jobId}/approve`, { method: 'POST' });
       if (res) {
-        alert('Patch approved! Local remediation branch merged and GitHub PR confirmed.');
+        showToast('Patch Approved', 'Local remediation branch merged and GitHub PR confirmed.', 'success');
         await fetchInitialData();
         renderApp();
       }
@@ -1765,33 +1897,37 @@ ${data.kubernetesYaml}
 
     rejectRemediation: async (jobId) => {
       await api(`/api/security/remediations/${jobId}/reject`, { method: 'POST' });
+      showToast('Patch Rejected', 'Remediation proposal was rejected.', 'info');
       await fetchInitialData();
       renderApp();
     },
 
     resolveFinding: async (id) => {
       await api(`/api/security/findings/${id}/status?status=RESOLVED`, { method: 'PATCH' });
+      showToast('Finding Resolved', 'Security finding marked as resolved.', 'success');
       await fetchInitialData();
       renderApp();
     },
 
     // Scan & Pipeline actions
     scanProject: async (id) => {
+      showToast('Security Scan Started', 'Running Gitleaks, Trivy, Hadolint, and SonarQube...', 'info', 2000);
       const res = await api(`/api/projects/${id}/scan`, { method: 'POST' });
       if (res) {
-        alert(`Security scan completed for project: ${res.projectName}\nScore: ${res.securityScore}/100`);
+        showToast('Scan Completed', `Project: ${res.projectName} • Score: ${res.securityScore}/100`, 'success', 4500);
         await fetchInitialData();
         renderApp();
       }
     },
 
     triggerPipeline: async (id) => {
+      showToast('Pipeline Dispatched', 'Orchestrating 12 CI/CD security stages...', 'info', 2200);
       const res = await api('/api/pipelines/trigger', {
         method: 'POST',
         body: JSON.stringify({ projectId: id, branch: 'main' })
       });
       if (res) {
-        alert(`Pipeline #${res.executionNumber} triggered and passed security gates!`);
+        showToast('Pipeline Execution', `Pipeline #${res.executionNumber} passed security gates!`, 'success', 4500);
         await fetchInitialData();
         state.selectedExecution = res;
         state.currentPage = 'pipelines';
@@ -1801,6 +1937,7 @@ ${data.kubernetesYaml}
 
     cancelPipeline: async (id) => {
       await api(`/api/pipelines/${id}/cancel`, { method: 'POST' });
+      showToast('Pipeline Cancelled', 'Execution was stopped by operator.', 'warning');
       await fetchInitialData();
       renderApp();
     },
@@ -1808,19 +1945,21 @@ ${data.kubernetesYaml}
     openJenkinsTemplate: async () => {
       const res = await api('/api/pipelines/jenkinsfile-template');
       if (res) {
-        alert(`Jenkinsfile Template:\n\n${res.jenkinsfile}`);
+        window.app.openModal('jenkinsfilePreview', res);
       }
     },
 
     // App server actions
     startServer: async (id) => {
       await api(`/api/apps/${id}/start`, { method: 'POST' });
+      showToast('Server Started', 'Development container running on designated port.', 'success');
       await fetchInitialData();
       renderApp();
     },
 
     stopServer: async (id) => {
       await api(`/api/apps/${id}/stop`, { method: 'POST' });
+      showToast('Server Stopped', 'Container server instance was stopped.', 'info');
       await fetchInitialData();
       renderApp();
     },
@@ -1846,17 +1985,22 @@ ${data.kubernetesYaml}
       });
       if (res) {
         window.app.closeModal();
+        showToast('Project Registered', `Repository "${name}" added to security monitoring.`, 'success');
         await fetchInitialData();
         renderApp();
       }
     },
 
     deleteProject: async (id) => {
-      if (confirm('Are you sure you want to delete this project registry?')) {
-        await api(`/api/projects/${id}`, { method: 'DELETE' });
-        await fetchInitialData();
-        renderApp();
-      }
+      window.app.openModal('confirmDeleteProject', { id });
+    },
+
+    executeDeleteProject: async (id) => {
+      window.app.closeModal();
+      await api(`/api/projects/${id}`, { method: 'DELETE' });
+      showToast('Project Removed', 'Repository removed from platform registry.', 'info');
+      await fetchInitialData();
+      renderApp();
     },
 
     // Vault actions
@@ -1871,32 +2015,41 @@ ${data.kubernetesYaml}
         body: JSON.stringify({ secretKey: key, secretPath: path, secretType: type })
       });
       window.app.closeModal();
+      showToast('Secret Stored', `Secret "${key}" written to HashiCorp Vault.`, 'success');
       await fetchInitialData();
       renderApp();
     },
 
     rotateVaultSecret: async (id) => {
       await api(`/api/vault/secrets/${id}/rotate`, { method: 'POST' });
+      showToast('Secret Rotated', 'New credential version generated and synchronized.', 'success');
       await fetchInitialData();
       renderApp();
     },
 
     deleteVaultSecret: async (id) => {
-      if (confirm('Delete secret from Vault KV v2 engine?')) {
-        await api(`/api/vault/secrets/${id}`, { method: 'DELETE' });
-        await fetchInitialData();
-        renderApp();
-      }
+      window.app.openModal('confirmDeleteSecret', { id });
+    },
+
+    executeDeleteVaultSecret: async (id) => {
+      window.app.closeModal();
+      await api(`/api/vault/secrets/${id}`, { method: 'DELETE' });
+      showToast('Vault Secret Deleted', 'Secret key removed from Vault KV storage.', 'info');
+      await fetchInitialData();
+      renderApp();
     },
 
     testVaultConnection: async () => {
       const res = await api('/api/vault/test-connection', { method: 'POST' });
-      if (res) alert(`Vault Handshake: ${res.status}\n${res.message}\nLatency: ${res.latencyMs}ms`);
+      if (res) {
+        showToast(`Vault: ${res.status}`, `${res.message} (Latency: ${res.latencyMs}ms)`, res.status === 'SUCCESS' ? 'success' : 'warning');
+      }
     },
 
     // Falco Runtime Alert actions
     acknowledgeAlert: async (id) => {
       await api(`/api/runtime/alerts/${id}/acknowledge`, { method: 'POST' });
+      showToast('Alert Acknowledged', 'Falco runtime alert acknowledged by operator.', 'info');
       await fetchInitialData();
       renderApp();
     },
@@ -1905,15 +2058,17 @@ ${data.kubernetesYaml}
       const alerts = await api('/api/runtime/alerts');
       if (alerts) {
         state.alerts = alerts;
+        showToast('Alerts Refreshed', `Synchronized ${alerts.length} Falco runtime event(s).`, 'info', 2000);
         renderApp();
       }
     },
 
     // Compliance actions
     triggerReAudit: async () => {
+      showToast('Auditing Controls', 'Evaluating CIS, NIST, and SOC 2 security policies...', 'info', 2000);
       const res = await api('/api/compliance/audit', { method: 'POST' });
       if (res) {
-        alert(`Audit Complete: ${res.controlsEvaluated} controls re-evaluated. Evidence refreshed.`);
+        showToast('Audit Complete', `${res.controlsEvaluated} controls re-evaluated. Evidence refreshed.`, 'success');
         await fetchInitialData();
         renderApp();
       }
@@ -1921,11 +2076,14 @@ ${data.kubernetesYaml}
 
     exportCompliancePackage: async () => {
       const res = await api('/api/compliance/export');
-      if (res) alert(`Audit Package ${res.exportId} compiled for frameworks:\n${res.frameworks.join(', ')}`);
+      if (res) {
+        showToast('Compliance Package Exported', `Package ${res.exportId} compiled for ${res.frameworks.join(', ')}`, 'success');
+      }
     },
 
     // Reports export
     downloadCsvReport: () => {
+      showToast('Downloading CSV', 'Generating vulnerability assessment spreadsheet...', 'info', 2500);
       window.location.href = '/api/reports/export-csv';
     },
 
@@ -1936,18 +2094,24 @@ ${data.kubernetesYaml}
       a.href = URL.createObjectURL(blob);
       a.download = `pipeline_log_${state.selectedExecution ? state.selectedExecution.id : 'latest'}.txt`;
       a.click();
+      showToast('Logs Downloaded', 'CI/CD pipeline logs saved to text file.', 'success');
     },
 
     // Settings actions
     saveSettings: async (e) => {
       e.preventDefault();
-      alert('Platform settings and security policies updated successfully.');
+      showToast('Settings Saved', 'Platform settings and security policies updated successfully.', 'success');
     },
 
     testIntegration: async (name) => {
       const res = await api(`/api/settings/integrations/${name}/test`, { method: 'POST' });
-      if (res) alert(`Integration Test: ${res.name}\nStatus: ${res.status}\n${res.message}`);
-    }
+      if (res) {
+        showToast(`Integration: ${res.name}`, `${res.status} — ${res.message}`, res.status === 'CONNECTED' ? 'success' : 'warning');
+      }
+    },
+
+    // Helper exposed to window.app
+    toast: showToast
   };
 
   // Launch on document ready
